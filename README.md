@@ -1,5 +1,5 @@
 # 🌍 Zeta
-
+<img height=500 width=100% src="https://github.com/NEURAL-Y/zeta/blob/main/public/logo.png"/>
 > **When centralized communication dies, people shouldn't.**
 
 Zeta is a decentralized peer-to-peer communication platform designed for disaster scenarios where traditional communication infrastructure no longer exists. Instead of relying on cloud servers, every device communicates directly with nearby devices over local networks.
