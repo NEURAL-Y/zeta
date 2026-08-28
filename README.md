@@ -1,343 +1,161 @@
-# 🌍 Zeta
-<img height=500 width=100% src="https://github.com/NEURAL-Y/zeta/blob/main/public/logo.png"/>
-> **When centralized communication dies, people shouldn't.**
+<div align="center">
 
-Zeta is a decentralized peer-to-peer communication platform designed for disaster scenarios where traditional communication infrastructure no longer exists. Instead of relying on cloud servers, every device communicates directly with nearby devices over local networks.
+<img src="https://raw.githubusercontent.com/NEURAL-Y/zeta/main/public/logo.png" alt="Zeta" width="100%"/>
+
+# 🌍 Zeta
+
+**When centralized communication dies, people shouldn't.**
+
+![Status](https://img.shields.io/badge/status-under%20development-yellow)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#contributing)
+
+[Story](#-story) • [Features](#-features) • [How It Works](#-how-it-works) • [Network Architecture](#-network-architecture) • [Status](#-current-status) • [Roadmap](#-future-roadmap)
+
+</div>
 
 ---
+
+Zeta is a decentralized peer-to-peer communication platform built for disaster scenarios where traditional communication infrastructure no longer exists. Instead of relying on cloud servers, every device talks directly to nearby devices over local networks.
 
 ## 📖 Story
 
-Humanity's first contact with extraterrestrial life didn't begin with war.
+Humanity's first contact with extraterrestrial life didn't begin with war. It began with silence.
 
-It began with silence.
+Within hours of arrival, every major communication system collapsed — internet, messaging platforms, phone networks, cloud infrastructure, all unusable. Communities were isolated. Emergency responders couldn't coordinate. Families couldn't reach each other.
 
-Within hours of arriving on Earth, every major communication system collapsed. Internet services, messaging platforms, phone networks, and cloud infrastructure became unusable.
+Zeta rebuilds communication from the ground up by removing the dependency on centralized infrastructure. Every device becomes an independent node, capable of sending and receiving messages directly.
 
-Communities were isolated.
-
-Emergency responders couldn't coordinate.
-
-Families couldn't communicate.
-
-Zeta rebuilds communication from the ground up by removing the dependency on centralized infrastructure. Every device becomes an independent communication node capable of sending and receiving messages directly.
-
----
-
-# ✨ Features
+## ✨ Features
 
 - ⚡ Fully decentralized architecture
 - 🤝 Peer-to-peer communication
-- 🌐 Local WiFi / Mobile Hotspot support
-- 📶 Internet independent
+- 🌐 Local WiFi / mobile hotspot support, internet independent
 - 🔄 Automatic reconnection
-- 💾 Local message storage
-- 🔒 End-to-end encryption *(Planned)*
-- 📍 Automatic peer discovery *(Planned)*
-- 📁 File sharing *(Planned)*
-- 📢 Emergency broadcast *(Planned)*
-- 📲 Bluetooth fallback *(Planned)*
+- 💾 Local message storage (SQLite)
+- 🔒 End-to-end encryption *(planned)*
+- 📍 Automatic peer discovery *(planned)*
+- 📁 File sharing *(planned)*
+- 📢 Emergency broadcast *(planned)*
+- 📲 Bluetooth fallback *(planned)*
 
----
+## 🚀 How It Works
 
-# 🏗 Architecture
+```text
+Traditional            Zeta
+─────────────          ─────────────
+User                   Device
+  │                       │
+Cloud Server         Direct TCP
+  │                       │
+User                   Device
+```
+
+No cloud. No central server. No internet dependency. Each node independently sends and receives messages — every device acts as both **client and server**:
 
 ```text
           Local WiFi / Mobile Hotspot
 
-        ┌───────────────────────────────┐
-        │                               │
-        │                               │
 ┌──────────────┐                 ┌──────────────┐
-│    Phone     │◄──────────────►│    Laptop    │
-│              │                 │              │
+│    Phone     │◄───────────────►│    Laptop    │
 │ Sender       │                 │ Sender       │
 │ Receiver     │                 │ Receiver     │
 │ SQLite       │                 │ SQLite       │
 └──────────────┘                 └──────────────┘
-
-     Every device acts as both
-        Client and Server
 ```
 
----
+## 🛡 Why Peer-to-Peer?
 
-# 🚀 How It Works
+Most platforms depend on a central server — if it fails, communication stops. Zeta removes that single point of failure: every device is equal, and every device can communicate directly.
 
-Traditional messaging:
+## 🌐 Network Architecture
+
+Zeta uses a **hybrid** model. When two devices are in direct range, they connect via **peer-to-peer (P2P)** over local WiFi or a hotspot:
 
 ```text
-User
-  │
-Cloud Server
-  │
-User
+Phone ◄──────────────► Laptop
 ```
 
-Zeta:
+When the destination is out of range, Zeta falls back to a **mesh topology** — intermediate devices relay messages until they reach their target, each acting as both endpoint and relay:
 
 ```text
-Device
-   │
-Direct TCP Connection
-   │
-Device
+Alice → Bob → Charlie → David
 ```
 
-No cloud.
-
-No central server.
-
-No internet dependency.
-
-Each node independently sends and receives messages.
-
----
-
-# 🔧 Technology Stack
-
-| Component | Technology |
-|-----------|------------|
-| Language | Python |
-| Networking | TCP Sockets |
-| Concurrency | asyncio / Threads |
-| Storage | SQLite |
-| Data Format | JSON |
-| Mobile | Python |
-| Desktop | Python |
-
----
-
-# 📂 Project Structure
+| Mode | Used when | Characteristics |
+|---|---|---|
+| **Direct** | Destination is reachable | Low latency, high bandwidth, no intermediate nodes |
+| **Mesh** | Destination is out of range | Forwarded through nearby trusted devices; relays don't need message contents when E2E encryption is enabled |
 
 ```text
-zeta/
-
-├── desktop/
-│   ├── sender.py
-│   ├── receiver.py
-│   ├── network.py
-│   └── app.py
-│
-├── mobile/
-│   ├── sender.py
-│   ├── receiver.py
-│   └── app.py
-│
-├── database/
-│   └── chat.db
-│
-├── shared/
-│   ├── protocol.py
-│   ├── encryption.py
-│   └── models.py
-│
-├── assets/
-├── README.md
-└── requirements.txt
-```
-
----
-
-# 🔄 Communication Flow
-
-```text
-User
- │
- ▼
-Write Message
- │
- ▼
-Serialize (JSON)
- │
- ▼
-TCP Socket
- │
- ▼
-Nearby Device
- │
- ▼
-Deserialize
- │
- ▼
-Display Message
-```
-
----
-
-# 📡 Communication Layers
-
-### Primary Layer
-
-- Local WiFi
-- Mobile Hotspot
-
-Provides high-speed communication without internet access.
-
-### Secondary Layer *(Planned)*
-
-- Bluetooth
-
-Automatically used when WiFi or hotspot communication is unavailable.
-
----
-
-# 🛡 Why Peer-to-Peer?
-
-Most communication platforms rely on centralized infrastructure.
-
-```text
-Users
-   │
-Server
-   │
-Users
-```
-
-If the server fails, communication stops.
-
-Zeta removes this single point of failure.
-
-```text
-Phone ◄────────────► Laptop
-```
-
-Every device is equal.
-
-Every device can communicate directly.
-
--# 🌐 Network Architecture
-
-Zeta uses a **hybrid communication architecture**.
-
-When two devices are within direct communication range, they establish a **peer-to-peer (P2P)** connection over a local WiFi network or mobile hotspot.
-
-```
-Phone  ◄──────────────►  Laptop
-```
-
-However, direct communication is not always possible. If the destination device is outside the communication range, Zeta transitions to a **mesh topology**, where intermediate devices relay encrypted messages until they reach their destination.
-
-```
-Alice
-   │
-   ▼
-Bob
-   │
-   ▼
-Charlie
-   │
-   ▼
-David
-```
-
-Each device acts as both a communication endpoint and a relay node, extending the effective communication range without requiring centralized infrastructure.
-
----
-
-## Communication Strategy
-
-### Direct Mode
-
-Used when the destination device is directly reachable.
-
-- Low latency
-- High bandwidth
-- Point-to-point communication
-- No intermediate nodes
-
-```
-Sender ─────────► Receiver
-```
-
----
-
-### Mesh Mode
-
-Used when the destination device is outside direct communication range.
-
-Messages are securely forwarded through nearby trusted devices.
-
-```
-Sender
-   │
-Relay Node
-   │
-Relay Node
-   │
-Receiver
-```
-
-Each relay only forwards packets and does not need to access message contents when end-to-end encryption is enabled.
-
----
-
-## Communication Priority
-
-```
 Destination Reachable?
         │
    ┌────┴────┐
-   │         │
   Yes        No
    │         │
 Direct P2P   Mesh Routing
 ```
 
----
+## 🔧 Technology Stack
 
-## Future Enhancements
+| Component | Technology |
+|---|---|
+| Language | Python |
+| Networking | TCP Sockets |
+| Concurrency | asyncio / Threads |
+| Storage | SQLite |
+| Data Format | JSON |
+| Mobile & Desktop | Python |
 
-- Automatic peer discovery
-- Dynamic route selection
-- Multi-hop mesh routing
-- Bluetooth relay support
-- Delay-Tolerant Networking (DTN)
-- Store-and-forward messaging
-- End-to-end encrypted message forwarding
+## 📂 Project Structure
 
-# 🎯 Current Status
+```text
+zeta/
+├── desktop/    sender.py · receiver.py · network.py · app.py
+├── mobile/     sender.py · receiver.py · app.py
+├── database/   chat.db
+├── shared/     protocol.py · encryption.py · models.py
+├── assets/
+└── requirements.txt
+```
+
+**Message flow:** write → serialize (JSON) → TCP socket → nearby device → deserialize → display.
+
+## 🎯 Current Status
 
 - ✅ Direct peer-to-peer messaging
 - ✅ Local network communication
-- ✅ Message synchronization
-- ✅ Local message storage
+- ✅ Message synchronization & local storage
 - ⏳ End-to-end encryption
 - ⏳ Bluetooth fallback
 - ⏳ Automatic peer discovery
-- ⏳ File sharing
-- ⏳ Voice communication
+- ⏳ File sharing, voice communication
 - ⏳ Mesh networking
 
----
+## 🌎 Future Roadmap
 
-# 🌎 Future Roadmap
+Mesh networking · delay-tolerant networking (DTN) · multi-hop routing · automatic peer discovery · end-to-end encryption · offline synchronization · emergency broadcast · voice communication · file sharing · community communication networks
 
-- Mesh Networking
-- Delay-Tolerant Networking (DTN)
-- Multi-hop Routing
-- Automatic Peer Discovery
-- End-to-End Encryption
-- Offline Synchronization
-- Emergency Broadcast
-- Voice Communication
-- File Sharing
-- Community Communication Networks
+## 💡 Vision
 
----
+In a world where centralized infrastructure can fail, communication shouldn't. Zeta turns every nearby device into an independent communication node — resilient, decentralized communication even when the internet is gone.
 
-# 💡 Vision
+## Contributing
 
-In a world where centralized infrastructure can fail, communication should not.
+Contributions are welcome — bug fixes, docs, protocol work, or new relay/transport support.
 
-Zeta transforms every nearby device into an independent communication node, enabling resilient, decentralized communication even when the internet is unavailable.
+1. Fork the repo and branch from `main`.
+2. Make focused commits; add tests where relevant.
+3. Open a PR describing the change and motivation.
+
+## 📄 License
+
+Released under the [MIT License](LICENSE).
 
 ---
 
-# 📄 License
+<div align="center">
 
-MIT License
+**"Every device is a node. Every connection matters."**
 
----
-
-> **"Every device is a node. Every connection matters."**
+</div>
