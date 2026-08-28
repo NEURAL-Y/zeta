@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/NEURAL-Y/zeta/main/public/logo.png" alt="Zeta" width="100%"/>
+<img src="https://raw.githubusercontent.com/NEURAL-Y/zeta/main/public/logo.png" alt="Zeta" width="220"/>
 
 # 🌍 Zeta
 
